@@ -134,8 +134,10 @@
        HERO SECTION
        ================================================================= */
     .hero {
-      min-height: 100vh;
-      height: 100dvh;
+      min-height: calc(100vh - 70px);
+      height: calc(100dvh - 70px);
+      padding-top: 70px;
+      box-sizing: border-box;
       position: relative;
       background: linear-gradient(135deg, #f6b355 0%, #ee7a3a 25%, #d73c7e 50%, #8e44ad 75%, #3498db 100%);
       display: flex;
@@ -579,6 +581,12 @@
         padding: 0 20px;
       }
 
+      .hero {
+        min-height: calc(100vh - 70px);
+        height: calc(100dvh - 70px);
+        padding-top: 70px;
+      }
+
       .features-grid {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -597,6 +605,11 @@
       .cta-buttons {
         flex-direction: column;
         align-items: center;
+      }
+
+      .hero-button {
+        width: 100%;
+        max-width: 280px;
       }
     }
 
