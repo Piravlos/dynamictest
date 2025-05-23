@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f6b355">
   <title>Nimiq - The Browser-Based Blockchain</title>
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -122,6 +123,7 @@
       font-weight: 700;
       text-decoration: none;
       transition: transform 0.3s ease;
+      touch-action: manipulation;
     }
 
     .nav-cta:hover {
@@ -132,7 +134,8 @@
        HERO SECTION
        ================================================================= */
     .hero {
-      height: 100vh;
+      min-height: 100vh;
+      height: 100dvh;
       position: relative;
       background: linear-gradient(135deg, #f6b355 0%, #ee7a3a 25%, #d73c7e 50%, #8e44ad 75%, #3498db 100%);
       display: flex;
@@ -183,6 +186,7 @@
       font-weight: 700;
       text-decoration: none;
       transition: all 0.3s ease;
+      touch-action: manipulation;
     }
 
     .hero-button:hover {
@@ -499,6 +503,7 @@
       font-weight: 700;
       text-decoration: none;
       transition: all 0.3s ease;
+      touch-action: manipulation;
     }
 
     .cta-button:hover {
@@ -525,6 +530,7 @@
       flex-direction: column;
       gap: 4px;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .mobile-menu-toggle span {
@@ -545,6 +551,8 @@
         flex-direction: column;
         padding: 20px;
         gap: 20px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         transform: translateY(-100%);
         opacity: 0;
         transition: all 0.3s ease;
