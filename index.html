@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nimiq - The Browser-Based Blockchain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =================================================================
+       PERFORMANCE OPTIMIZED STYLES
+       ================================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Mulish', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      overflow-x: hidden;
+      /* Performance optimization */
+      contain: layout style;
+      will-change: scroll-position;
+    }
+
+    /* =================================================================
+       NAVIGATION
+       ================================================================= */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(246, 179, 85, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid rgba(246, 179, 85, 0.4);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #f6b355;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .nav-logo img {
+      height: 24px;
+      width: auto;
+      filter: brightness(0) saturate(100%) invert(78%) sepia(77%) saturate(377%) hue-rotate(354deg) brightness(102%) contrast(93%);
+      transition: filter 0.3s ease;
+    }
+
+    .nav-logo:hover img {
+      filter: brightness(0) saturate(100%) invert(78%) sepia(77%) saturate(377%) hue-rotate(354deg) brightness(110%) contrast(100%);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    .nav-menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-menu a:hover {
+      color: #f6b355;
+    }
+
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #f6b355;
+      transition: width 0.3s ease;
+    }
+
+    .nav-menu a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      background: linear-gradient(45deg, #f6b355, #ee7a3a);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+    }
+
+    /* =================================================================
+       HERO SECTION
+       ================================================================= */
+    .hero {
+      height: 100vh;
+      position: relative;
+      background: linear-gradient(135deg, #f6b355 0%, #ee7a3a 25%, #d73c7e 50%, #8e44ad 75%, #3498db 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      text-align: center;
+      color: white;
+      z-index: 100;
+      max-width: 800px;
+      padding: 0 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-button {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 15px 30px;
+      border: 2px solid rgba(246, 179, 85, 0.5);
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .hero-button:hover {
+      background: rgba(246, 179, 85, 0.2);
+      border-color: #f6b355;
+      transform: translateY(-2px);
+    }
+
+    .hero-button.primary {
+      background: linear-gradient(45deg, #f6b355, #ee7a3a);
+      border-color: transparent;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* =================================================================
+       CONTENT SECTIONS
+       ================================================================= */
+    .section {
+      padding: 120px 0;
+      position: relative;
+      contain: layout style;
+      will-change: transform;
+    }
+
+    .section:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    .section:nth-child(odd) .section-title {
+      background: linear-gradient(45deg, #f6b355, #ee7a3a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features Grid - Optimized */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
+      margin-top: 60px;
+      contain: layout;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px 30px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 15px 60px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(246, 179, 85, 0.15);
+      position: relative;
+      overflow: hidden;
+      /* Performance optimizations */
+      will-change: transform;
+      transform: translateZ(0); /* Hardware acceleration */
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(246, 179, 85, 0.1), transparent);
+      transition: left 0.6s ease;
+      will-change: transform;
+    }
+
+    .feature-card:hover::before {
+      left: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px) translateZ(0);
+      box-shadow: 0 25px 60px rgba(246, 179, 85, 0.2);
+      border-color: rgba(246, 179, 85, 0.4);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: scale(1.15) translateZ(0);
+    }
+
+    .feature-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    .feature-card:hover .feature-title {
+      color: #f6b355;
+    }
+
+    .feature-description {
+      color: #444;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+    }
+
+    .feature-card:hover .feature-description {
+      color: #333;
+    }
+
+    /* Optimized Stats Section */
+    .section.stats-section {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+      color: white;
+      position: relative;
+      contain: layout style;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      text-align: center;
+      contain: layout;
+    }
+
+    .stat-item {
+      padding: 30px 20px;
+      background: rgba(246, 179, 85, 0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(246, 179, 85, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+      transform: translateZ(0);
+      contain: layout style;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-8px) translateZ(0);
+      border-color: rgba(246, 179, 85, 0.6);
+      box-shadow: 0 15px 30px rgba(246, 179, 85, 0.15);
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #f6b355;
+      margin-bottom: 0.5rem;
+      will-change: transform;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    /* Optimized Technology Section */
+    .tech-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+      contain: layout;
+    }
+
+    .tech-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 35px 30px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(246, 179, 85, 0.1);
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+      transform: translateZ(0);
+      contain: layout style;
+    }
+
+    .tech-feature::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, #f6b355, #ee7a3a);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      transform-origin: bottom;
+      will-change: transform;
+    }
+
+    .tech-feature:hover::after {
+      transform: scaleY(1);
+    }
+
+    .tech-feature:hover {
+      transform: translateY(-5px) translateZ(0);
+      box-shadow: 0 20px 40px rgba(246, 179, 85, 0.1);
+      border-color: rgba(246, 179, 85, 0.3);
+    }
+
+    .tech-icon {
+      font-size: 2.5rem;
+      color: #f6b355;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .tech-feature:hover .tech-icon {
+      transform: scale(1.1) translateZ(0);
+    }
+
+    .tech-content h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    .tech-feature:hover .tech-content h3 {
+      color: #f6b355;
+    }
+
+    .tech-content p {
+      color: #444;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+      background: linear-gradient(135deg, #f6b355 0%, #ee7a3a 50%, #d73c7e 100%);
+      color: white;
+      text-align: center;
+    }
+
+    .cta-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .cta-description {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px 30px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: white;
+      transform: translateY(-2px);
+    }
+
+    .cta-button.primary {
+      background: white;
+      color: #f6b355;
+      border-color: white;
+    }
+
+    .cta-button.primary:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* =================================================================
+       MOBILE RESPONSIVENESS
+       ================================================================= */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .mobile-menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .mobile-menu-toggle {
+        display: flex;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .section {
+        padding: 80px 0;
+      }
+
+      .hero-content {
+        padding: 0 20px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+
+      .tech-features {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-buttons,
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-container {
+        padding: 0 15px;
+      }
+
+      .container {
+        padding: 0 15px;
+      }
+
+      .feature-card {
+        padding: 30px 20px;
+      }
+
+      .tech-feature {
+        padding: 20px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =================================================================
+       OPTIMIZED SCROLL ANIMATIONS
+       ================================================================= */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px) translateZ(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      will-change: opacity, transform;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0) translateZ(0);
+    }
+
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-30px) translateZ(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      will-change: opacity, transform;
+    }
+
+    .slide-in-left.visible {
+      opacity: 1;
+      transform: translateX(0) translateZ(0);
+    }
+
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(30px) translateZ(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      will-change: opacity, transform;
+    }
+
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: translateX(0) translateZ(0);
+    }
+
+    /* Simplified Animation Classes */
+    .stagger-item {
+      opacity: 0;
+      transform: translateY(20px) translateZ(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      will-change: opacity, transform;
+    }
+
+    .stagger-item.visible {
+      opacity: 1;
+      transform: translateY(0) translateZ(0);
+    }
+
+    /* Morphing Card Animation - Simplified */
+    .morph-card {
+      opacity: 0;
+      transform: scale(0.9) translateZ(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      will-change: opacity, transform;
+    }
+
+    .morph-card.visible {
+      opacity: 1;
+      transform: scale(1) translateZ(0);
+    }
+
+    /* Reveal Animation Variants - Simplified */
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.8) translateZ(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      will-change: opacity, transform;
+    }
+
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1) translateZ(0);
+    }
+
+    /* Bounce Animation - Simplified */
+    .bounce-in {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px) translateZ(0);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      will-change: opacity, transform;
+    }
+
+    .bounce-in.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0) translateZ(0);
+    }
+
+    /* Optimized Floating Animation */
+    .float-card {
+      animation: optimizedFloat 4s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .float-card:nth-child(2n) {
+      animation-delay: -1.5s;
+    }
+
+    .float-card:nth-child(3n) {
+      animation-delay: -3s;
+    }
+
+    @keyframes optimizedFloat {
+      0%, 100% { 
+        transform: translateY(0px) translateZ(0); 
+      }
+      50% { 
+        transform: translateY(-8px) translateZ(0); 
+      }
+    }
+
+    /* Simplified Pulse Animation */
+    .pulse-animation.visible {
+      animation: optimizedPulse 3s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes optimizedPulse {
+      0%, 100% { 
+        transform: scale(1) translateZ(0); 
+      }
+      50% { 
+        transform: scale(1.02) translateZ(0); 
+      }
+    }
+
+    /* Section-specific optimized delays */
+    .features-grid .feature-card:nth-child(1).visible { transition-delay: 0.1s; }
+    .features-grid .feature-card:nth-child(2).visible { transition-delay: 0.2s; }
+    .features-grid .feature-card:nth-child(3).visible { transition-delay: 0.3s; }
+    .features-grid .feature-card:nth-child(4).visible { transition-delay: 0.1s; }
+    .features-grid .feature-card:nth-child(5).visible { transition-delay: 0.2s; }
+    .features-grid .feature-card:nth-child(6).visible { transition-delay: 0.3s; }
+
+    .stats-grid .stat-item:nth-child(1).visible { transition-delay: 0.1s; }
+    .stats-grid .stat-item:nth-child(2).visible { transition-delay: 0.2s; }
+    .stats-grid .stat-item:nth-child(3).visible { transition-delay: 0.3s; }
+    .stats-grid .stat-item:nth-child(4).visible { transition-delay: 0.4s; }
+
+    /* Remove expensive effects for better performance */
+    .glow-border {
+      position: relative;
+    }
+
+    .glow-border:hover {
+      box-shadow: 0 0 20px rgba(246, 179, 85, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <img src="nimiqlogo.svg" alt="Nimiq Logo">
+      </a>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#stats">Stats</a></li>
+        <li><a href="#ecosystem">Ecosystem</a></li>
+      </ul>
+      
+      <div class="mobile-menu-toggle" id="mobile-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <a href="https://wallet.nimiq.com" target="_blank" class="nav-cta">Try Wallet</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div id="canvas-container"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Pay them all.</h1>
+      <p class="hero-subtitle">One Coin to Rule Every Payment, Anywhere, Anytime.</p>
+      <div class="hero-buttons">
+        <a href="https://nimiq.com" target="_blank" class="hero-button primary">Explore Nimiq</a>
+        <a href="https://wallet.nimiq.com" target="_blank" class="hero-button">Web Wallet</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Revolutionary Features</h2>
+        <p class="section-subtitle">Experience blockchain technology reimagined for the modern web</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">Browser-Native</h3>
+          <p class="feature-description">No downloads, no plugins, no complexity. Access the blockchain directly through your browser with TypeScript and WebAssembly.</p>
+        </div>
+        
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Lightning Fast</h3>
+          <p class="feature-description">Sub-second block times with Albatross consensus. Experience instant transactions with peak capacity of 1,000+ TPS.</p>
+        </div>
+        
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">🏷️</div>
+          <h3 class="feature-title">Human Addresses</h3>
+          <p class="feature-description">Forget cryptographic addresses. Use readable names like @alice to send and receive payments effortlessly.</p>
+        </div>
+        
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">💳</div>
+          <h3 class="feature-title">Cashlink Payments</h3>
+          <p class="feature-description">Send money via simple links. Share payments through any messaging platform without requiring technical knowledge.</p>
+        </div>
+        
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">🔗</div>
+          <h3 class="feature-title">Cross-Chain Ready</h3>
+          <p class="feature-description">Seamlessly bridge to other blockchains. Multi-chain compatibility built for the interconnected future.</p>
+        </div>
+        
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">🌱</div>
+          <h3 class="feature-title">Carbon Neutral</h3>
+          <p class="feature-description">Proof-of-Stake consensus ensures minimal energy consumption while maintaining maximum security and decentralization.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section id="stats" class="section stats-section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title" style="color: white;">Network Statistics</h2>
+        <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Real-time performance metrics of the Nimiq blockchain</p>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-item bounce-in pulse-animation">
+          <div class="stat-number">~1.0s</div>
+          <div class="stat-label">Block Time</div>
+        </div>
+        
+        <div class="stat-item bounce-in pulse-animation">
+          <div class="stat-number">1,000+</div>
+          <div class="stat-label">Peak TPS</div>
+        </div>
+        
+        <div class="stat-item bounce-in pulse-animation">
+          <div class="stat-number">100</div>
+          <div class="stat-label">Min Stake (NIM)</div>
+        </div>
+        
+        <div class="stat-item bounce-in pulse-animation">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Network Uptime</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Section -->
+  <section id="technology" class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Albatross Technology</h2>
+        <p class="section-subtitle">Next-generation Proof-of-Stake consensus optimized for speed and security</p>
+      </div>
+      
+      <div class="tech-features">
+        <div class="tech-feature slide-in-left stagger-item">
+          <div class="tech-icon">🔧</div>
+          <div class="tech-content">
+            <h3>Albatross Consensus</h3>
+            <p>Revolutionary PoS protocol with instant finality and optimal performance for real-world applications.</p>
+          </div>
+        </div>
+        
+        <div class="tech-feature slide-in-right stagger-item">
+          <div class="tech-icon">🛡️</div>
+          <div class="tech-content">
+            <h3>Quantum Resistant</h3>
+            <p>Future-proof cryptography designed to withstand quantum computing threats.</p>
+          </div>
+        </div>
+        
+        <div class="tech-feature slide-in-left stagger-item">
+          <div class="tech-icon">💎</div>
+          <div class="tech-content">
+            <h3>Delegated Staking</h3>
+            <p>Participate in network security with as little as 100 NIM through delegation pools.</p>
+          </div>
+        </div>
+        
+        <div class="tech-feature slide-in-right stagger-item">
+          <div class="tech-icon">📱</div>
+          <div class="tech-content">
+            <h3>Mobile Optimized</h3>
+            <p>Full blockchain functionality on mobile devices with optimized performance and battery life.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem Section -->
+  <section id="ecosystem" class="section">
+    <div class="container">
+      <div class="section-header fade-in">
+        <h2 class="section-title">Growing Ecosystem</h2>
+        <p class="section-subtitle">Discover the applications and services built on Nimiq</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card reveal-scale float-card glow-border">
+          <div class="feature-icon">💰</div>
+          <h3 class="feature-title">Web Wallet</h3>
+          <p class="feature-description">Secure, browser-based wallet with advanced features for managing your NIM and participating in staking.</p>
+        </div>
+        
+        <div class="feature-card reveal-scale float-card glow-border">
+          <div class="feature-icon">🚀</div>
+          <h3 class="feature-title">Nimiq Pay</h3>
+          <p class="feature-description">Payment integration for merchants and developers to accept NIM payments seamlessly.</p>
+        </div>
+        
+        <div class="feature-card reveal-scale float-card glow-border">
+          <div class="feature-icon">🔄</div>
+          <h3 class="feature-title">DEX & DeFi</h3>
+          <p class="feature-description">Decentralized exchange and DeFi protocols built natively on Nimiq's fast infrastructure.</p>
+        </div>
+        
+        <div class="feature-card reveal-scale float-card glow-border">
+          <div class="feature-icon">🛠️</div>
+          <h3 class="feature-title">Developer Tools</h3>
+          <p class="feature-description">Comprehensive APIs, SDKs, and documentation for building on the Nimiq ecosystem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content fade-in">
+        <h2 class="cta-title">Ready to Experience Nimiq?</h2>
+        <p class="cta-description">Join the browser-based blockchain revolution. Start using Nimiq today.</p>
+        <div class="cta-buttons">
+          <a href="https://wallet.nimiq.com" target="_blank" class="cta-button primary">Open Web Wallet</a>
+          <a href="https://nimiq.com" target="_blank" class="cta-button">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    'use strict';
+
+    /* ====================================================================
+       CONFIGURATION & CONSTANTS
+       ==================================================================== */
+    const CONFIG = {
+      coin: {
+        outerRadius: 1.2,
+        cornerRadius: 0.2,
+        depth: 0.3,
+        scaleFactor: 1.1,
+        offsetZ: 0.02
+      },
+      animation: {
+        rotationSpeed: 0.005,
+        floatSpeed: 0.008,
+        swayIntensity: 0.03,
+        lerpSpeed: 0.06,
+        scrollInfluence: 0.0008
+      },
+      textures: {
+        width: 1024,
+        height: 1024,
+        font: 'Mulish',
+        qualitySettings: {
+          generateMipmaps: false,
+          minFilter: THREE.LinearFilter,
+          magFilter: THREE.LinearFilter,
+          format: THREE.RGBAFormat,
+          flipY: true
+        }
+      },
+      colors: {
+        primary: '#f6b355',
+        secondary: '#ee7a3a',
+        accent: '#d73c7e',
+        dark: '#1a1a1a',
+        white: '#ffffff'
+      },
+      particles: {
+        count: 40,
+        spread: 12,
+        size: 0.012
+      }
+    };
+
+    const CONTENT = {
+      labels: {
+        front: "⬢ NIM",
+        back: "NIMIQ"
+      }
+    };
+
+    /* ====================================================================
+       SCROLL MANAGER
+       ==================================================================== */
+    class ScrollManager {
+      constructor() {
+        this.scrollY = 0;
+        this.targetScrollY = 0;
+        this.scrollVelocity = 0;
+        this.callbacks = [];
+        this._setupEventListeners();
+      }
+
+      _setupEventListeners() {
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+          this.targetScrollY = window.pageYOffset;
+          
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              this._updateScroll();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+      }
+
+      _updateScroll() {
+        const oldScrollY = this.scrollY;
+        this.scrollY += (this.targetScrollY - this.scrollY) * 0.1;
+        this.scrollVelocity = this.scrollY - oldScrollY;
+        
+        this.callbacks.forEach(callback => callback(this.scrollY, this.scrollVelocity));
+      }
+
+      onScroll(callback) {
+        this.callbacks.push(callback);
+      }
+
+      getScrollProgress() {
+        const heroHeight = window.innerHeight;
+        return Math.min(this.scrollY / heroHeight, 1);
+      }
+    }
+
+    /* ====================================================================
+       NAVIGATION MANAGER
+       ==================================================================== */
+    class NavigationManager {
+      constructor(scrollManager) {
+        this.navbar = document.getElementById('navbar');
+        this.navMenu = document.getElementById('nav-menu');
+        this.mobileToggle = document.getElementById('mobile-toggle');
+        
+        this._setupEventListeners();
+        this._setupScrollEffects(scrollManager);
+      }
+
+      _setupEventListeners() {
+        // Mobile menu toggle
+        this.mobileToggle.addEventListener('click', () => {
+          this.navMenu.classList.toggle('active');
+        });
+
+        // Smooth scrolling for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(anchor.getAttribute('href'));
+            if (target) {
+              const offsetTop = target.offsetTop - 70; // Account for fixed navbar
+              window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+              });
+              
+              // Close mobile menu if open
+              this.navMenu.classList.remove('active');
+            }
+          });
+        });
+      }
+
+      _setupScrollEffects(scrollManager) {
+        scrollManager.onScroll((scrollY) => {
+          if (scrollY > 50) {
+            this.navbar.classList.add('scrolled');
+          } else {
+            this.navbar.classList.remove('scrolled');
+          }
+        });
+      }
+    }
+
+    /* ====================================================================
+       OPTIMIZED ANIMATION OBSERVER
+       ==================================================================== */
+    class AnimationObserver {
+      constructor() {
+        this.observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                this._animateElement(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+          }
+        );
+
+        this._observeElements();
+      }
+
+      _animateElement(element) {
+        // Simple visibility toggle
+        element.classList.add('visible');
+        
+        // Handle children with simplified stagger
+        if (element.classList.contains('features-grid') || 
+            element.classList.contains('stats-grid') || 
+            element.classList.contains('tech-features')) {
+          this._animateChildren(element);
+        }
+      }
+
+      _animateChildren(container) {
+        const children = Array.from(container.children);
+        children.forEach((child, index) => {
+          if (!child.classList.contains('visible')) {
+            setTimeout(() => {
+              child.classList.add('visible');
+              
+              // Simple count-up for stats only
+              if (child.classList.contains('stat-item')) {
+                this._animateCountUp(child);
+              }
+            }, index * 100); // Reduced stagger delay
+          }
+        });
+      }
+
+      _animateCountUp(statElement) {
+        const numberElement = statElement.querySelector('.stat-number');
+        if (!numberElement) return;
+
+        const finalText = numberElement.textContent;
+        const match = finalText.match(/\d+/);
+        
+        if (match) {
+          const finalNumber = parseInt(match[0]);
+          let currentNumber = 0;
+          const increment = Math.max(1, Math.ceil(finalNumber / 20)); // Reduced iterations
+          
+          const timer = setInterval(() => {
+            currentNumber += increment;
+            if (currentNumber >= finalNumber) {
+              currentNumber = finalNumber;
+              clearInterval(timer);
+            }
+            numberElement.textContent = finalText.replace(/\d+/, currentNumber);
+          }, 80); // Reduced frequency
+        }
+      }
+
+      _observeElements() {
+        // Simplified element observation
+        const selectors = [
+          '.fade-in', '.slide-in-left', '.slide-in-right',
+          '.stagger-item', '.morph-card', '.reveal-scale', '.bounce-in',
+          '.features-grid', '.stats-grid', '.tech-features'
+        ];
+
+        selectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => {
+            this.observer.observe(el);
+          });
+        });
+
+        // Simple hover effects
+        this._setupSimpleHoverEffects();
+      }
+
+      _setupSimpleHoverEffects() {
+        // Simplified hover effects without complex calculations
+        document.querySelectorAll('.feature-card, .stat-item, .tech-feature').forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            card.style.willChange = 'transform';
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            card.style.willChange = 'auto';
+          });
+        });
+      }
+    }
+
+    /* ====================================================================
+       GEOMETRY UTILITIES (Same as before)
+       ==================================================================== */
+    class GeometryUtils {
+      static createRoundedHexShape(outerRadius, cornerRadius) {
+        const shape = new THREE.Shape();
+        const sides = 6;
+        const step = (2 * Math.PI) / sides;
+
+        for (let i = 0; i < sides; i++) {
+          const angleCenter = i * step;
+          const arcStart = angleCenter - step / 2;
+          const arcEnd = angleCenter + step / 2;
+
+          const centerX = (outerRadius - cornerRadius) * Math.cos(angleCenter);
+          const centerY = (outerRadius - cornerRadius) * Math.sin(angleCenter);
+
+          if (i === 0) {
+            const startX = centerX + cornerRadius * Math.cos(arcStart);
+            const startY = centerY + cornerRadius * Math.sin(arcStart);
+            shape.moveTo(startX, startY);
+          }
+          shape.absarc(centerX, centerY, cornerRadius, arcStart, arcEnd, false);
+        }
+        shape.closePath();
+        return shape;
+      }
+    }
+
+    /* ====================================================================
+       TEXTURE CREATION (Simplified)
+       ==================================================================== */
+    class TextureFactory {
+      static drawHexagonSymbol(ctx, x, y, size, fillStyle = CONFIG.colors.white, strokeStyle = null) {
+        ctx.save();
+        
+        const hexRadius = size;
+        ctx.beginPath();
+        
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i + Math.PI / 6;
+          const ptX = x + hexRadius * Math.cos(angle);
+          const ptY = y + hexRadius * Math.sin(angle);
+          
+          if (i === 0) {
+            ctx.moveTo(ptX, ptY);
+          } else {
+            ctx.lineTo(ptX, ptY);
+          }
+        }
+        
+        ctx.closePath();
+        
+        if (fillStyle) {
+          ctx.fillStyle = fillStyle;
+          ctx.fill();
+        }
+        
+        if (strokeStyle) {
+          ctx.strokeStyle = strokeStyle;
+          ctx.lineWidth = 3;
+          ctx.lineJoin = 'round';
+          ctx.stroke();
+        }
+        
+        ctx.restore();
+      }
+
+      static createTextTexture(text, options = {}) {
+        const {
+          width = CONFIG.textures.width,
+          height = CONFIG.textures.height,
+          font = `bold 240px ${CONFIG.textures.font}`,
+          color = CONFIG.colors.white,
+          outlineColor = CONFIG.colors.dark,
+          outlineWidth = 8,
+          glowColor = CONFIG.colors.primary,
+          glowIntensity = 0.3
+        } = options;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        
+        this._setupHighQualityRendering(ctx);
+        ctx.clearRect(0, 0, width, height);
+        
+        ctx.font = font;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        const centerX = width / 2;
+        const centerY = height / 2;
+        
+        if (text.includes('⬢')) {
+          this._renderTextWithHexagon(ctx, text, centerX, centerY, color);
+        } else {
+          this._renderRegularText(ctx, text, centerX, centerY, {
+            color, outlineColor, outlineWidth, glowColor, glowIntensity
+          });
+        }
+
+        return this._createTexture(canvas);
+      }
+
+      static _setupHighQualityRendering(ctx) {
+        ctx.textRenderingOptimization = 'optimizeQuality';
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+      }
+
+      static _renderTextWithHexagon(ctx, text, centerX, centerY, color) {
+        const hexSize = 100;
+        const hexX = 480;
+        const textX = 1280;
+        
+        this.drawHexagonSymbol(ctx, hexX, centerY, hexSize, color);
+        
+        const textWithoutHex = text.replace('⬢ ', '');
+        ctx.fillStyle = color;
+        ctx.fillText(textWithoutHex, textX, centerY);
+      }
+    
+      static _renderRegularText(ctx, text, x, y, options) {
+        const { color, outlineColor, outlineWidth, glowColor, glowIntensity } = options;
+    
+        // Glow effect
+        if (glowIntensity > 0) {
+          ctx.shadowColor = glowColor;
+          ctx.shadowBlur = 20;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+          ctx.fillStyle = glowColor;
+          ctx.globalAlpha = glowIntensity;
+          ctx.fillText(text, x, y);
+          ctx.globalAlpha = 1.0;
+          ctx.shadowBlur = 0;
+        }
+    
+        // Outline
+        if (outlineWidth > 0) {
+          ctx.strokeStyle = outlineColor;
+          ctx.lineWidth = outlineWidth;
+          ctx.lineJoin = 'round';
+          ctx.miterLimit = 2;
+          ctx.strokeText(text, x, y);
+        }
+    
+        // Main text
+        ctx.fillStyle = color;
+        ctx.fillText(text, x, y);
+      }
+
+      static _createTexture(canvas) {
+        const texture = new THREE.CanvasTexture(canvas);
+        Object.assign(texture, CONFIG.textures.qualitySettings);
+        texture.needsUpdate = true;
+        return texture;
+      }
+    }
+
+    /* ====================================================================
+       COIN CREATION (Same as before)
+       ==================================================================== */
+    class CoinFactory {
+      static create() {
+        const geometry = this._createGeometry();
+        const material = this._createMaterial();
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.castShadow = true;
+        return mesh;
+      }
+
+      static _createGeometry() {
+        const { outerRadius, cornerRadius, depth } = CONFIG.coin;
+        const coinShape = GeometryUtils.createRoundedHexShape(outerRadius, cornerRadius);
+        
+        const extrudeSettings = {
+          depth: depth,
+          bevelEnabled: true,
+          bevelThickness: 0.02,
+          bevelSize: 0.02,
+          bevelSegments: 8,
+          curveSegments: 32
+        };
+
+        const geometry = new THREE.ExtrudeGeometry(coinShape, extrudeSettings);
+        geometry.computeBoundingBox();
+        geometry.translate(0, 0, -depth * 0.5);
+        geometry.computeVertexNormals();
+        
+        return geometry;
+      }
+
+      static _createMaterial() {
+        return new THREE.MeshStandardMaterial({
+          color: CONFIG.colors.primary,
+          metalness: 0.7,
+          roughness: 0.15,
+          envMapIntensity: 1.0
+        });
+      }
+    }
+
+    /* ====================================================================
+       PLANE CREATION (Same as before)
+       ==================================================================== */
+    class PlaneFactory {
+      static createPlanes(coinGeometry) {
+        const { width, height } = this._calculatePlaneDimensions(coinGeometry);
+        const { topZ, bottomZ } = this._calculatePositions();
+        
+        const geometry = new THREE.PlaneGeometry(width, height);
+        
+        const topMaterial = this._createPlaneMaterial(
+          TextureFactory.createTextTexture(CONTENT.labels.front, {
+            font: `bold 280px ${CONFIG.textures.font}`,
+            glowColor: CONFIG.colors.primary,
+            glowIntensity: 0.4
+          })
+        );
+        
+        const bottomMaterial = this._createPlaneMaterial(
+          TextureFactory.createTextTexture(CONTENT.labels.back, {
+            font: `bold 240px ${CONFIG.textures.font}`,
+            glowColor: CONFIG.colors.secondary,
+            glowIntensity: 0.4
+          })
+        );
+
+        const topPlane = new THREE.Mesh(geometry, topMaterial);
+        const bottomPlane = new THREE.Mesh(geometry, bottomMaterial);
+        
+        topPlane.position.z = topZ;
+        bottomPlane.position.z = bottomZ;
+        bottomPlane.rotation.y = Math.PI;
+
+        return { topPlane, bottomPlane, topMaterial, bottomMaterial };
+      }
+
+      static _calculatePlaneDimensions(geometry) {
+        const bb = geometry.boundingBox;
+        const coinWidth = bb.max.x - bb.min.x;
+        const coinHeight = bb.max.y - bb.min.y;
+        
+        return {
+          width: coinWidth * CONFIG.coin.scaleFactor,
+          height: coinHeight * CONFIG.coin.scaleFactor
+        };
+      }
+
+      static _calculatePositions() {
+        const { depth, offsetZ } = CONFIG.coin;
+        return {
+          topZ: (depth / 2) + offsetZ,
+          bottomZ: -(depth / 2) - offsetZ
+        };
+      }
+
+      static _createPlaneMaterial(texture) {
+        return new THREE.MeshBasicMaterial({
+          transparent: true,
+          side: THREE.DoubleSide,
+          map: texture,
+          opacity: 1.0,
+          depthTest: true,
+          depthWrite: false,
+          polygonOffset: true,
+          polygonOffsetFactor: -1,
+          polygonOffsetUnits: -1
+        });
+      }
+    }
+
+    /* ====================================================================
+       LIGHTING SYSTEM (Same as before)
+       ==================================================================== */
+    class LightingSystem {
+      static setup(scene) {
+        const ambientLight = new THREE.AmbientLight(CONFIG.colors.white, 0.4);
+        scene.add(ambientLight);
+
+        const dirLight1 = new THREE.DirectionalLight(CONFIG.colors.primary, 0.6);
+        dirLight1.position.set(5, 5, 5);
+        dirLight1.castShadow = true;
+        scene.add(dirLight1);
+
+        const dirLight2 = new THREE.DirectionalLight(CONFIG.colors.secondary, 0.3);
+        dirLight2.position.set(-5, 3, 2);
+        scene.add(dirLight2);
+
+        const pointLight = new THREE.PointLight(CONFIG.colors.accent, 0.5, 10);
+        pointLight.position.set(0, 0, 3);
+        scene.add(pointLight);
+
+        return { ambientLight, dirLight1, dirLight2, pointLight };
+      }
+    }
+
+    /* ====================================================================
+       PARTICLE SYSTEM (Enhanced)
+       ==================================================================== */
+    class ParticleSystem {
+      static create() {
+        const { count, spread, size } = CONFIG.particles;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(count * 3);
+        const velocities = new Float32Array(count * 3);
+
+        for (let i = 0; i < count * 3; i += 3) {
+          positions[i] = (Math.random() - 0.5) * spread;
+          positions[i + 1] = (Math.random() - 0.5) * spread;
+          positions[i + 2] = (Math.random() - 0.5) * spread;
+          
+          velocities[i] = (Math.random() - 0.5) * 0.02;
+          velocities[i + 1] = (Math.random() - 0.5) * 0.02;
+          velocities[i + 2] = (Math.random() - 0.5) * 0.02;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.userData = { velocities };
+
+        const material = new THREE.PointsMaterial({
+          color: CONFIG.colors.primary,
+          size: size,
+          transparent: true,
+          opacity: 0.6
+        });
+
+        return new THREE.Points(geometry, material);
+      }
+
+      static animate(particleSystem, time, scrollVelocity = 0) {
+        const positions = particleSystem.geometry.attributes.position.array;
+        const velocities = particleSystem.geometry.userData.velocities;
+        
+        for (let i = 0; i < positions.length; i += 3) {
+          positions[i + 1] += Math.sin(time + i) * 0.001;
+          
+          // Add scroll influence to particles
+          positions[i] += scrollVelocity * 0.1;
+          positions[i + 1] += scrollVelocity * 0.05;
+        }
+        
+        particleSystem.geometry.attributes.position.needsUpdate = true;
+        particleSystem.rotation.y += 0.001 + Math.abs(scrollVelocity) * 0.01;
+      }
+    }
+
+    /* ====================================================================
+       ANIMATION CONTROLLER (Enhanced with Scroll)
+       ==================================================================== */
+    class AnimationController {
+      constructor(coinGroup, lights, scrollManager) {
+        this.coinGroup = coinGroup;
+        this.lights = lights;
+        this.scrollManager = scrollManager;
+        this.time = 0;
+        this.baseRotationSpeed = CONFIG.animation.rotationSpeed;
+        this.currentRotationSpeed = this.baseRotationSpeed;
+        
+        this._setupScrollEffects();
+      }
+
+      _setupScrollEffects() {
+        this.scrollManager.onScroll((scrollY, scrollVelocity) => {
+          const scrollProgress = this.scrollManager.getScrollProgress();
+          
+          // Very subtle scale effect
+          const scale = 1 + scrollProgress * 0.05;
+          this.coinGroup.scale.setScalar(scale);
+          
+          // Subtle speed increase when scrolling (smooth and controlled)
+          const scrollSpeedMultiplier = 1 + Math.abs(scrollVelocity) * 3;
+          this.targetRotationSpeed = this.baseRotationSpeed * Math.min(scrollSpeedMultiplier, 2.5);
+        });
+      }
+
+      update() {
+        this.time += CONFIG.animation.floatSpeed;
+
+        // Floating animation
+        this.coinGroup.position.y = Math.sin(this.time) * 0.1;
+        
+        // Smooth rotation speed transition
+        this.currentRotationSpeed += (this.targetRotationSpeed - this.currentRotationSpeed) * 0.1;
+        
+        // Dynamic spinning with smooth speed changes
+        this.coinGroup.rotation.y += this.currentRotationSpeed || this.baseRotationSpeed;
+        this.coinGroup.rotation.x = -0.2 + Math.sin(this.time * 0.5) * CONFIG.animation.swayIntensity;
+
+        // Static light animation
+        this.lights.pointLight.intensity = 0.5 + Math.sin(this.time * 2) * 0.1;
+      }
+    }
+
+    /* ====================================================================
+       MAIN APPLICATION (Updated)
+       ==================================================================== */
+    class NimiqVisualization {
+      constructor() {
+        this.scrollManager = new ScrollManager();
+        this.navigationManager = new NavigationManager(this.scrollManager);
+        this.animationObserver = new AnimationObserver();
+        
+        this._initializeScene();
+        this._createObjects();
+        this._setupInteractions();
+        this._startAnimation();
+      }
+
+      _initializeScene() {
+        // Scene setup
+        this.scene = new THREE.Scene();
+        this.scene.background = null; // Transparent background
+
+        // Camera setup
+        this.camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          100
+        );
+        this.camera.position.set(0, 0.1, 6);
+        this.scene.add(this.camera);
+
+        // Renderer setup - Optimized for performance
+        this.renderer = new THREE.WebGLRenderer({ 
+          antialias: window.devicePixelRatio <= 1, // Only on low-DPI displays
+          alpha: true, // Enable transparency
+          powerPreference: "high-performance" // Request high-performance GPU
+        });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio
+        // Disable shadows for better performance
+        this.renderer.shadowMap.enabled = false;
+        this.renderer.setClearColor(0x000000, 0); // Transparent background
+        
+        const container = document.getElementById('canvas-container');
+        container.appendChild(this.renderer.domElement);
+      }
+
+      _createObjects() {
+        // Create coin
+        this.coinMesh = CoinFactory.create();
+
+        // Create coin group (just the coin mesh, no text planes)
+        this.coinGroup = new THREE.Group();
+        this.coinGroup.add(this.coinMesh);
+        this.coinGroup.rotation.x = -0.2;
+        this.scene.add(this.coinGroup);
+
+        // Setup lighting
+        this.lights = LightingSystem.setup(this.scene);
+
+        // Create particle system
+        this.particleSystem = ParticleSystem.create();
+        this.scene.add(this.particleSystem);
+      }
+
+      _setupInteractions() {
+        // Animation controller with scroll integration
+        this.animationController = new AnimationController(
+          this.coinGroup, 
+          this.lights, 
+          this.scrollManager
+        );
+
+        // Responsive handler
+        this._setupResponsiveHandling();
+      }
+
+      _setupResponsiveHandling() {
+        const handleResize = () => {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          
+          if (window.innerWidth <= 768) {
+            this.camera.position.set(0, 0.2, 7);
+            this.camera.fov = 50;
+          } else {
+            this.camera.position.set(0, 0.1, 6);
+            this.camera.fov = 45;
+          }
+          
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
+      }
+
+      _startAnimation() {
+        const animate = () => {
+          requestAnimationFrame(animate);
+          
+          this.animationController.update();
+          
+          // Get scroll velocity for particle animation
+          const scrollVelocity = this.scrollManager.scrollVelocity || 0;
+          ParticleSystem.animate(this.particleSystem, this.animationController.time, scrollVelocity);
+          
+          this.renderer.render(this.scene, this.camera);
+        };
+        
+        animate();
+      }
+
+      dispose() {
+        // Clean up resources
+        if (this.coinMesh) {
+          this.coinMesh.geometry.dispose();
+          this.coinMesh.material.dispose();
+        }
+        
+        if (this.particleSystem) {
+          this.particleSystem.geometry.dispose();
+          this.particleSystem.material.dispose();
+        }
+        
+        if (this.renderer) {
+          this.renderer.dispose();
+        }
+      }
+    }
+
+    /* ====================================================================
+       INITIALIZATION
+       ==================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      new NimiqVisualization();
+    });
+
+    // Fallback initialization if DOMContentLoaded already fired
+    if (document.readyState === 'loading') {
+      // Do nothing, event listener will handle it
+    } else {
+      new NimiqVisualization();
+    }
+  </script>
+</body>
+</html>
