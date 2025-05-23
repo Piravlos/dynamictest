@@ -134,8 +134,8 @@
        HERO SECTION
        ================================================================= */
     .hero {
-      min-height: calc(100vh - 70px);
-      height: calc(100dvh - 70px);
+      height: 100vh;
+      height: 100dvh;
       padding-top: 70px;
       box-sizing: border-box;
       position: relative;
@@ -159,52 +159,100 @@
     }
 
     .hero-title {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 800;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      font-size: clamp(2.8rem, 9vw, 6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+      text-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      overflow: visible;
+      font-family: 'Mulish', sans-serif;
+      color: #ffffff;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .hero-subtitle {
-      font-size: clamp(1.2rem, 3vw, 1.5rem);
-      margin-bottom: 2rem;
-      opacity: 0.9;
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      margin-bottom: 2.5rem;
+      line-height: 1.4;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.95;
+      padding: 0 10px;
+      font-weight: 500;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      font-family: 'Mulish', sans-serif;
+      color: rgba(255, 255, 255, 0.95);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
 
     .hero-buttons {
       display: flex;
-      gap: 20px;
+      gap: 14px;
       justify-content: center;
       flex-wrap: wrap;
+      margin-top: 1.2rem;
     }
 
     .hero-button {
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(20px);
       color: white;
-      padding: 15px 30px;
-      border: 2px solid rgba(246, 179, 85, 0.5);
-      border-radius: 30px;
+      padding: 12px 24px;
+      border: 2px solid rgba(246, 179, 85, 0.6);
+      border-radius: 35px;
       font-weight: 700;
+      font-size: 0.9rem;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       touch-action: manipulation;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      min-width: 160px; /* Ensure minimum width */
+      min-width: 140px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .hero-button:hover::before {
+      left: 100%;
     }
 
     .hero-button:hover {
-      background: rgba(246, 179, 85, 0.2);
+      background: rgba(246, 179, 85, 0.9);
       border-color: #f6b355;
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 40px rgba(246, 179, 85, 0.4);
+      color: #1a1a1a;
     }
 
     .hero-button.primary {
-      background: linear-gradient(45deg, #f6b355, #ee7a3a);
+      background: linear-gradient(135deg, #f6b355, #ee7a3a);
       border-color: transparent;
+      color: #1a1a1a;
+      font-weight: 800;
+    }
+
+    .hero-button.primary:hover {
+      background: linear-gradient(135deg, #ee7a3a, #d73c7e);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 15px 50px rgba(246, 179, 85, 0.5);
     }
 
     #canvas-container {
@@ -244,8 +292,13 @@
     .section-title {
       font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 800;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       color: #2c3e50;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      font-family: 'Mulish', sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
 
     .section:nth-child(odd) .section-title {
@@ -256,10 +309,15 @@
     }
 
     .section-subtitle {
-      font-size: 1.2rem;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
       color: #555;
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
+      line-height: 1.5;
+      font-weight: 400;
+      font-family: 'Mulish', sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Features Grid - Optimized */
@@ -317,16 +375,33 @@
       transform: translateZ(0);
     }
 
+    .feature-icon img {
+      width: 56px;
+      height: 56px;
+      display: block;
+      margin: 0 auto;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+
     .feature-card:hover .feature-icon {
       transform: scale(1.15) translateZ(0);
     }
 
+    .feature-card:hover .feature-icon img {
+      filter: drop-shadow(0 8px 16px rgba(246, 179, 85, 0.4));
+    }
+
     .feature-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
       color: #333;
       transition: color 0.3s ease;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      font-family: 'Mulish', sans-serif;
+      text-rendering: optimizeLegibility;
     }
 
     .feature-card:hover .feature-title {
@@ -337,6 +412,10 @@
       color: #444;
       line-height: 1.6;
       transition: color 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 400;
+      font-family: 'Mulish', sans-serif;
+      text-rendering: optimizeLegibility;
     }
 
     .feature-card:hover .feature-description {
@@ -453,11 +532,15 @@
     }
 
     .tech-content h3 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       color: #333;
       transition: color 0.3s ease;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      font-family: 'Mulish', sans-serif;
+      text-rendering: optimizeLegibility;
     }
 
     .tech-feature:hover .tech-content h3 {
@@ -466,8 +549,11 @@
 
     .tech-content p {
       color: #444;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       line-height: 1.6;
+      font-weight: 400;
+      font-family: 'Mulish', sans-serif;
+      text-rendering: optimizeLegibility;
     }
 
     /* Call to Action Section */
@@ -538,6 +624,12 @@
       gap: 4px;
       cursor: pointer;
       touch-action: manipulation;
+      padding: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-toggle:hover {
+      transform: scale(1.1);
     }
 
     .mobile-menu-toggle span {
@@ -545,6 +637,21 @@
       height: 3px;
       background: white;
       transition: all 0.3s ease;
+      border-radius: 2px;
+      display: block;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
     }
 
     @media (max-width: 768px) {
@@ -563,15 +670,59 @@
         transform: translateY(-100%);
         opacity: 0;
         transition: all 0.3s ease;
+        z-index: 1999;
+        max-height: calc(100vh - 70px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       }
 
       .nav-menu.active {
         transform: translateY(0);
         opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-menu li {
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-menu a {
+        display: block;
+        padding: 15px 20px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        touch-action: manipulation;
+      }
+
+      .nav-menu a:hover,
+      .nav-menu a:focus {
+        background: rgba(246, 179, 85, 0.2);
+        color: #f6b355;
+        transform: translateX(5px);
       }
 
       .mobile-menu-toggle {
         display: flex;
+        z-index: 2001;
+        position: relative;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .mobile-menu-toggle:hover {
+        background: rgba(246, 179, 85, 0.1);
+      }
+
+      .mobile-menu-toggle:active {
+        background: rgba(246, 179, 85, 0.2);
       }
 
       .nav-cta {
@@ -583,20 +734,28 @@
       }
 
       .hero-content {
-        padding: 0 20px;
-        top: calc(50% + 35px); /* Account for navbar height on mobile */
+        padding: 0 15px;
+        max-width: 98vw;
+        margin-top: 35px; /* Consistent navbar offset */
       }
 
       .hero-title {
-        font-size: clamp(2.5rem, 10vw, 4rem);
-        line-height: 1.1;
-        margin-bottom: 0.8rem;
+        font-size: clamp(2.5rem, 9vw, 3.8rem);
+        line-height: 1.2;
+        margin-bottom: 2.5rem;
+        letter-spacing: -0.02em;
+        text-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+        overflow: visible;
       }
 
       .hero-subtitle {
-        font-size: clamp(1rem, 4vw, 1.3rem);
-        margin-bottom: 1.5rem;
+        font-size: clamp(1.1rem, 4vw, 1.4rem);
+        margin-bottom: 2.5rem;
         line-height: 1.4;
+        max-width: 100%;
+        opacity: 0.98;
+        padding: 0 10px;
       }
 
       .hero-buttons {
@@ -606,6 +765,11 @@
       .features-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+      }
+
+      .feature-icon img {
+        width: 48px;
+        height: 48px;
       }
 
       .stats-grid {
@@ -624,6 +788,29 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      .section-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+        margin-bottom: 1.25rem;
+        line-height: 1.05;
+      }
+
+      .section-subtitle {
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        line-height: 1.45;
+        max-width: 100%;
+      }
+
+      .feature-title {
+        font-size: 1.35rem;
+        line-height: 1.25;
+        margin-bottom: 0.875rem;
+      }
+
+      .feature-description {
+        font-size: 0.9rem;
+        line-height: 1.55;
+      }
     }
 
     @media (max-width: 480px) {
@@ -637,28 +824,45 @@
 
       .hero-content {
         top: calc(50% + 15px);
-        padding: 0 10px;
-        max-width: calc(100vw - 20px);
+        padding: 0 15px;
+        max-width: 98vw;
       }
 
       .hero-title {
-        font-size: clamp(2rem, 12vw, 3.5rem);
-        margin-bottom: 0.6rem;
+        font-size: clamp(2.4rem, 10vw, 3.8rem);
+        margin-bottom: 1rem;
+        line-height: 0.85;
+        letter-spacing: -0.035em;
+        text-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
       }
 
       .hero-subtitle {
-        font-size: clamp(0.9rem, 5vw, 1.2rem);
-        margin-bottom: 1.2rem;
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        margin-bottom: 2rem;
+        line-height: 1.3;
+        max-width: 100%;
+        opacity: 0.98;
       }
 
       .hero-button {
-        padding: 12px 20px;
+        padding: 12px 24px;
         font-size: 0.9rem;
         min-width: 140px;
+        border-radius: 35px;
+      }
+
+      .hero-buttons {
+        gap: 14px;
+        margin-top: 1.2rem;
       }
 
       .feature-card {
         padding: 30px 20px;
+      }
+
+      .feature-icon img {
+        width: 42px;
+        height: 42px;
       }
 
       .tech-feature {
@@ -668,21 +872,70 @@
       .stats-grid {
         grid-template-columns: 1fr;
       }
+
+      .section-title {
+        font-size: clamp(1.8rem, 7vw, 2.5rem);
+        margin-bottom: 1rem;
+        line-height: 1.05;
+      }
+
+      .section-subtitle {
+        font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+        line-height: 1.4;
+      }
+
+      .feature-title {
+        font-size: 1.25rem;
+        line-height: 1.2;
+        margin-bottom: 0.75rem;
+      }
+
+      .feature-description {
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
     }
 
     @media (max-height: 600px) and (max-width: 768px) {
+      .hero {
+        height: 100vh;
+        height: 100dvh;
+      }
+      
       .hero-content {
-        top: calc(50% + 10px);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 96vw;
+        padding: 0 15px;
       }
       
       .hero-title {
-        font-size: clamp(1.8rem, 8vw, 2.5rem);
-        margin-bottom: 0.5rem;
+        font-size: clamp(2.2rem, 9vw, 3.2rem);
+        margin-bottom: 0.8rem;
+        line-height: 0.8;
+        letter-spacing: -0.04em;
+        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
       }
       
       .hero-subtitle {
-        font-size: clamp(0.8rem, 3vw, 1rem);
-        margin-bottom: 1rem;
+        font-size: clamp(0.95rem, 3.5vw, 1.2rem);
+        margin-bottom: 1.5rem;
+        line-height: 1.25;
+        max-width: 100%;
+        opacity: 0.98;
+      }
+
+      .hero-buttons {
+        gap: 12px;
+        margin-top: 1rem;
+      }
+
+      .hero-button {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        min-width: 120px;
+        border-radius: 30px;
       }
     }
 
@@ -837,6 +1090,59 @@
       box-shadow: 0 0 20px rgba(246, 179, 85, 0.3);
       transition: box-shadow 0.3s ease;
     }
+
+    /* =================================================================
+       ORIENTATION CHANGE FIXES
+       ================================================================= */
+    
+    /* Force proper height recalculation on orientation change */
+    @media screen and (orientation: landscape) {
+      .hero {
+        height: 100vh;
+        height: 100dvh;
+      }
+    }
+
+    @media screen and (orientation: portrait) {
+      .hero {
+        height: 100vh;
+        height: 100dvh;
+      }
+    }
+
+    /* Additional mobile-specific orientation fixes */
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+      .hero-content {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0 20px;
+        margin-top: 20px; /* Slightly less offset for landscape */
+      }
+      
+      .hero-title {
+        font-size: clamp(2.2rem, 9vw, 3.2rem);
+        margin-bottom: 0.8rem;
+        line-height: 0.8;
+        letter-spacing: -0.04em;
+        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      }
+      
+      .hero-subtitle {
+        font-size: clamp(0.95rem, 3.5vw, 1.2rem);
+        margin-bottom: 1.5rem;
+        line-height: 1.25;
+        max-width: 100%;
+        opacity: 0.98;
+      }
+    }
+
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      .hero-content {
+        top: 50%;
+        margin-top: 35px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -870,7 +1176,7 @@
     <div id="canvas-container"></div>
     <div class="hero-content">
       <h1 class="hero-title">Pay them all.</h1>
-      <p class="hero-subtitle">One Coin to Rule Every Payment, Anywhere, Anytime.</p>
+      <p class="hero-subtitle">One coin to rule every payment, anywhere, anytime.</p>
       <div class="hero-buttons">
         <a href="https://nimiq.com" target="_blank" class="hero-button primary">Explore Nimiq</a>
         <a href="https://wallet.nimiq.com" target="_blank" class="hero-button">Web Wallet</a>
@@ -882,45 +1188,45 @@
   <section id="features" class="section">
     <div class="container">
       <div class="section-header fade-in">
-        <h2 class="section-title">Revolutionary Features</h2>
-        <p class="section-subtitle">Experience blockchain technology reimagined for the modern web</p>
+        <h2 class="section-title">Key Features</h2>
+        <p class="section-subtitle">Lightning-fast, web-native blockchain technology designed for seamless payments</p>
       </div>
       
       <div class="features-grid">
         <div class="feature-card morph-card float-card glow-border">
-          <div class="feature-icon">🌐</div>
-          <h3 class="feature-title">Browser-Native</h3>
-          <p class="feature-description">No downloads, no plugins, no complexity. Access the blockchain directly through your browser with TypeScript and WebAssembly.</p>
-        </div>
-        
-        <div class="feature-card morph-card float-card glow-border">
           <div class="feature-icon">⚡</div>
-          <h3 class="feature-title">Lightning Fast</h3>
-          <p class="feature-description">Sub-second block times with Albatross consensus. Experience instant transactions with peak capacity of 1,000+ TPS.</p>
+          <h3 class="feature-title">Lightning-Fast Transactions</h3>
+          <p class="feature-description">Supports up to 1,000 transactions per second with 1-second confirmations for instant payment processing.</p>
         </div>
         
         <div class="feature-card morph-card float-card glow-border">
-          <div class="feature-icon">🏷️</div>
-          <h3 class="feature-title">Human Addresses</h3>
-          <p class="feature-description">Forget cryptographic addresses. Use readable names like @alice to send and receive payments effortlessly.</p>
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">Browser-Based</h3>
+          <p class="feature-description">No installation required - your browser acts as a node. Built for JavaScript/TypeScript development.</p>
         </div>
         
         <div class="feature-card morph-card float-card glow-border">
-          <div class="feature-icon">💳</div>
-          <h3 class="feature-title">Cashlink Payments</h3>
-          <p class="feature-description">Send money via simple links. Share payments through any messaging platform without requiring technical knowledge.</p>
+          <div class="feature-icon">🚀</div>
+          <h3 class="feature-title">No Middlemen</h3>
+          <p class="feature-description">Pure peer-to-peer transactions without intermediaries. Direct, secure, and efficient payments.</p>
         </div>
         
         <div class="feature-card morph-card float-card glow-border">
-          <div class="feature-icon">🔗</div>
-          <h3 class="feature-title">Cross-Chain Ready</h3>
-          <p class="feature-description">Seamlessly bridge to other blockchains. Multi-chain compatibility built for the interconnected future.</p>
+          <div class="feature-icon">🔐</div>
+          <h3 class="feature-title">Secure & Local</h3>
+          <p class="feature-description">Everything operates within a secure local element in your browser. Your keys, your coins, your control.</p>
         </div>
         
         <div class="feature-card morph-card float-card glow-border">
-          <div class="feature-icon">🌱</div>
-          <h3 class="feature-title">Carbon Neutral</h3>
-          <p class="feature-description">Proof-of-Stake consensus ensures minimal energy consumption while maintaining maximum security and decentralization.</p>
+          <div class="feature-icon">🛠</div>
+          <h3 class="feature-title">Web-Native Integration</h3>
+          <p class="feature-description">Built for web developers. No backend required - integrate into games and services effortlessly.</p>
+        </div>
+        
+        <div class="feature-card morph-card float-card glow-border">
+          <div class="feature-icon">✅</div>
+          <h3 class="feature-title">User-Friendly Staking</h3>
+          <p class="feature-description">Simplest self-custodial staking experience. Only 100 NIM minimum with delegated staking options.</p>
         </div>
       </div>
     </div>
@@ -930,29 +1236,29 @@
   <section id="stats" class="section stats-section">
     <div class="container">
       <div class="section-header fade-in">
-        <h2 class="section-title" style="color: white;">Network Statistics</h2>
-        <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Real-time performance metrics of the Nimiq blockchain</p>
+        <h2 class="section-title" style="color: white;">Network Performance</h2>
+        <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">Lightning-fast blockchain built for real-world payments</p>
       </div>
       
       <div class="stats-grid">
         <div class="stat-item bounce-in pulse-animation">
-          <div class="stat-number">~1.0s</div>
-          <div class="stat-label">Block Time</div>
+          <div class="stat-number">1s</div>
+          <div class="stat-label">Transaction Confirmation</div>
         </div>
         
         <div class="stat-item bounce-in pulse-animation">
-          <div class="stat-number">1,000+</div>
-          <div class="stat-label">Peak TPS</div>
+          <div class="stat-number">1,000</div>
+          <div class="stat-label">Transactions Per Second</div>
         </div>
         
         <div class="stat-item bounce-in pulse-animation">
           <div class="stat-number">100</div>
-          <div class="stat-label">Min Stake (NIM)</div>
+          <div class="stat-label">Min Staking (NIM)</div>
         </div>
         
         <div class="stat-item bounce-in pulse-animation">
-          <div class="stat-number">24/7</div>
-          <div class="stat-label">Network Uptime</div>
+          <div class="stat-number">$1,000</div>
+          <div class="stat-label">No-KYC Swap Limit</div>
         </div>
       </div>
     </div>
@@ -962,40 +1268,40 @@
   <section id="technology" class="section">
     <div class="container">
       <div class="section-header fade-in">
-        <h2 class="section-title">Albatross Technology</h2>
-        <p class="section-subtitle">Next-generation Proof-of-Stake consensus optimized for speed and security</p>
+        <h2 class="section-title">The Nimiq Wallet: Multi-Asset & Gas-Free</h2>
+        <p class="section-subtitle">Store, transact, and swap multiple assets without complexity or gas fees</p>
       </div>
       
       <div class="tech-features">
         <div class="tech-feature slide-in-left stagger-item">
-          <div class="tech-icon">🔧</div>
+          <div class="tech-icon">💰</div>
           <div class="tech-content">
-            <h3>Albatross Consensus</h3>
-            <p>Revolutionary PoS protocol with instant finality and optimal performance for real-world applications.</p>
+            <h3>Multi-Asset Support</h3>
+            <p>Store and transact Bitcoin, USDC & USDT on Polygon, and NIM in one simple interface.</p>
           </div>
         </div>
         
         <div class="tech-feature slide-in-right stagger-item">
-          <div class="tech-icon">🛡️</div>
+          <div class="tech-icon">🔄</div>
           <div class="tech-content">
-            <h3>Quantum Resistant</h3>
-            <p>Future-proof cryptography designed to withstand quantum computing threats.</p>
+            <h3>No-KYC Atomic Swaps</h3>
+            <p>Instantly swap up to $1,000 per 30 days between BTC/USDC and USDT/NIM without verification.</p>
           </div>
         </div>
         
         <div class="tech-feature slide-in-left stagger-item">
-          <div class="tech-icon">💎</div>
+          <div class="tech-icon">⛽</div>
           <div class="tech-content">
-            <h3>Delegated Staking</h3>
-            <p>Participate in network security with as little as 100 NIM through delegation pools.</p>
+            <h3>No Gas Fees Needed</h3>
+            <p>Send and swap USDC/USDT without needing MATIC for gas. Powered by Open Gas Station Network.</p>
           </div>
         </div>
         
         <div class="tech-feature slide-in-right stagger-item">
-          <div class="tech-icon">📱</div>
+          <div class="tech-icon">🔑</div>
           <div class="tech-content">
-            <h3>Mobile Optimized</h3>
-            <p>Full blockchain functionality on mobile devices with optimized performance and battery life.</p>
+            <h3>Non-Custodial Control</h3>
+            <p>Users control their funds completely. Everything happens client-side with the Nimiq Web Client.</p>
           </div>
         </div>
       </div>
@@ -1006,33 +1312,39 @@
   <section id="ecosystem" class="section">
     <div class="container">
       <div class="section-header fade-in">
-        <h2 class="section-title">Growing Ecosystem</h2>
-        <p class="section-subtitle">Discover the applications and services built on Nimiq</p>
+        <h2 class="section-title">Nimiq Pay App: Pay Instantly, Anywhere</h2>
+        <p class="section-subtitle">Use NIM for payments wherever Bitcoin Lightning is accepted worldwide</p>
       </div>
       
       <div class="features-grid">
         <div class="feature-card reveal-scale float-card glow-border">
-          <div class="feature-icon">💰</div>
-          <h3 class="feature-title">Web Wallet</h3>
-          <p class="feature-description">Secure, browser-based wallet with advanced features for managing your NIM and participating in staking.</p>
+          <div class="feature-icon">
+            <img src="nimiqpay.svg" alt="Nimiq Pay" style="width: 56px; height: 56px;">
+          </div>
+          <h3 class="feature-title">Lightning Payments</h3>
+          <p class="feature-description">Pay with NIM wherever Bitcoin Lightning and NIM are accepted for instant, low-cost transactions.</p>
         </div>
         
         <div class="feature-card reveal-scale float-card glow-border">
-          <div class="feature-icon">🚀</div>
-          <h3 class="feature-title">Nimiq Pay</h3>
-          <p class="feature-description">Payment integration for merchants and developers to accept NIM payments seamlessly.</p>
+          <div class="feature-icon">
+            <img src="nimiqmap.svg" alt="Nimiq Map" style="width: 56px; height: 56px;">
+          </div>
+          <h3 class="feature-title">Acceptance Map</h3>
+          <p class="feature-description">Find acceptance locations for NIM, Bitcoin LN and Bitcoin at map.nimiq.com worldwide.</p>
         </div>
         
         <div class="feature-card reveal-scale float-card glow-border">
-          <div class="feature-icon">🔄</div>
-          <h3 class="feature-title">DEX & DeFi</h3>
-          <p class="feature-description">Decentralized exchange and DeFi protocols built natively on Nimiq's fast infrastructure.</p>
+          <div class="feature-icon">
+            <img src="cryptocity.svg" alt="Crypto City" style="width: 56px; height: 56px;">
+          </div>
+          <h3 class="feature-title">Global Expansion</h3>
+          <p class="feature-description">Soon™️: Pay with NIM at Bluecode and NAKA locations - 75M+ acceptance points worldwide!</p>
         </div>
         
         <div class="feature-card reveal-scale float-card glow-border">
-          <div class="feature-icon">🛠️</div>
-          <h3 class="feature-title">Developer Tools</h3>
-          <p class="feature-description">Comprehensive APIs, SDKs, and documentation for building on the Nimiq ecosystem.</p>
+          <div class="feature-icon">🕹️</div>
+          <h3 class="feature-title">Developer-Friendly</h3>
+          <p class="feature-description">Compliance-free for web developers. No need to handle financial regulations as coins are not in your custody.</p>
         </div>
       </div>
     </div>
@@ -1164,13 +1476,61 @@
         
         this._setupEventListeners();
         this._setupScrollEffects(scrollManager);
+        this._setupOrientationHandling();
       }
 
       _setupEventListeners() {
-        // Mobile menu toggle
-        this.mobileToggle.addEventListener('click', () => {
-          this.navMenu.classList.toggle('active');
-        });
+        // Mobile menu toggle with enhanced error handling and debugging
+        if (this.mobileToggle && this.navMenu) {
+          console.log('Mobile menu elements found - setting up event listeners');
+          
+          // Touch-friendly event handling
+          const toggleMenu = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Mobile menu toggle clicked');
+            
+            const isActive = this.navMenu.classList.contains('active');
+            
+            if (isActive) {
+              this.navMenu.classList.remove('active');
+              this.mobileToggle.classList.remove('active');
+              console.log('Menu closed');
+            } else {
+              this.navMenu.classList.add('active');
+              this.mobileToggle.classList.add('active');
+              console.log('Menu opened');
+            }
+          };
+          
+          // Multiple event listeners for better mobile support
+          this.mobileToggle.addEventListener('click', toggleMenu);
+          this.mobileToggle.addEventListener('touchend', toggleMenu);
+
+          // Close menu when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!this.navbar.contains(e.target) && this.navMenu.classList.contains('active')) {
+              this.navMenu.classList.remove('active');
+              this.mobileToggle.classList.remove('active');
+              console.log('Menu closed - clicked outside');
+            }
+          });
+          
+          // Also handle touch events for mobile
+          document.addEventListener('touchend', (e) => {
+            if (!this.navbar.contains(e.target) && this.navMenu.classList.contains('active')) {
+              this.navMenu.classList.remove('active');
+              this.mobileToggle.classList.remove('active');
+              console.log('Menu closed - touched outside');
+            }
+          });
+        } else {
+          console.error('Mobile menu elements not found:', {
+            mobileToggle: !!this.mobileToggle,
+            navMenu: !!this.navMenu
+          });
+        }
 
         // Smooth scrolling for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1185,9 +1545,46 @@
               });
               
               // Close mobile menu if open
-              this.navMenu.classList.remove('active');
+              if (this.navMenu) {
+                this.navMenu.classList.remove('active');
+                this.mobileToggle.classList.remove('active');
+                console.log('Menu closed - nav link clicked');
+              }
             }
           });
+        });
+      }
+
+      _setupOrientationHandling() {
+        // Handle orientation changes
+        const handleOrientationChange = () => {
+          // Close mobile menu on orientation change
+          if (this.navMenu && this.navMenu.classList.contains('active')) {
+            this.navMenu.classList.remove('active');
+            this.mobileToggle.classList.remove('active');
+          }
+          
+          // Force layout recalculation after a short delay
+          setTimeout(() => {
+            // Trigger a reflow to fix positioning issues
+            document.body.style.display = 'none';
+            document.body.offsetHeight; // Force reflow
+            document.body.style.display = '';
+            
+            // Dispatch a custom event for other components
+            window.dispatchEvent(new Event('orientationFixed'));
+          }, 100);
+        };
+
+        // Listen to orientation change events
+        window.addEventListener('orientationchange', handleOrientationChange);
+        screen.orientation?.addEventListener('change', handleOrientationChange);
+        
+        // Also listen to resize as a fallback
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(handleOrientationChange, 150);
         });
       }
 
@@ -1710,7 +2107,6 @@
     class NimiqVisualization {
       constructor() {
         this.scrollManager = new ScrollManager();
-        this.navigationManager = new NavigationManager(this.scrollManager);
         this.animationObserver = new AnimationObserver();
         
         this._initializeScene();
@@ -1796,7 +2192,30 @@
           this.renderer.setSize(window.innerWidth, window.innerHeight);
         };
 
+        // Enhanced orientation change handling
+        const handleOrientationChange = () => {
+          // Delay to allow for proper orientation change
+          setTimeout(() => {
+            handleResize();
+            // Force a render to ensure proper display
+            this.renderer.render(this.scene, this.camera);
+          }, 100);
+        };
+
+        // Standard resize listener
         window.addEventListener('resize', handleResize);
+        
+        // Orientation change listeners
+        window.addEventListener('orientationchange', handleOrientationChange);
+        
+        // Listen for the custom orientation fixed event
+        window.addEventListener('orientationFixed', handleResize);
+        
+        // Screen orientation API (modern browsers)
+        if (screen.orientation) {
+          screen.orientation.addEventListener('change', handleOrientationChange);
+        }
+
         handleResize(); // Initial call
       }
 
@@ -1837,15 +2256,50 @@
     /* ====================================================================
        INITIALIZATION
        ==================================================================== */
-    document.addEventListener('DOMContentLoaded', () => {
+    
+    // Initialize Navigation immediately when DOM is ready
+    let navigationManager;
+    const initNavigation = () => {
+      // Simple scroll manager for navigation only
+      const simpleScrollManager = {
+        callbacks: [],
+        onScroll(callback) {
+          this.callbacks.push(callback);
+        }
+      };
+      
+      // Setup scroll listener for navbar
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.pageYOffset;
+            simpleScrollManager.callbacks.forEach(callback => callback(scrollY));
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      
+      navigationManager = new NavigationManager(simpleScrollManager);
+    };
+    
+    // Initialize main application
+    const initApp = () => {
       new NimiqVisualization();
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavigation();
+      initApp();
     });
 
     // Fallback initialization if DOMContentLoaded already fired
     if (document.readyState === 'loading') {
       // Do nothing, event listener will handle it
     } else {
-      new NimiqVisualization();
+      initNavigation();
+      initApp();
     }
   </script>
 </body>
