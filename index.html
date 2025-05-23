@@ -189,6 +189,11 @@
       text-decoration: none;
       transition: all 0.3s ease;
       touch-action: manipulation;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 160px; /* Ensure minimum width */
+      text-align: center;
     }
 
     .hero-button:hover {
@@ -579,12 +584,23 @@
 
       .hero-content {
         padding: 0 20px;
+        top: calc(50% + 35px); /* Account for navbar height on mobile */
       }
 
-      .hero {
-        min-height: calc(100vh - 70px);
-        height: calc(100dvh - 70px);
-        padding-top: 70px;
+      .hero-title {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        line-height: 1.1;
+        margin-bottom: 0.8rem;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.3rem);
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+      }
+
+      .hero-buttons {
+        gap: 15px;
       }
 
       .features-grid {
@@ -601,15 +617,12 @@
         grid-template-columns: 1fr;
       }
 
-      .hero-buttons,
-      .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-
       .hero-button {
         width: 100%;
         max-width: 280px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
@@ -622,6 +635,28 @@
         padding: 0 15px;
       }
 
+      .hero-content {
+        top: calc(50% + 15px);
+        padding: 0 10px;
+        max-width: calc(100vw - 20px);
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 12vw, 3.5rem);
+        margin-bottom: 0.6rem;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(0.9rem, 5vw, 1.2rem);
+        margin-bottom: 1.2rem;
+      }
+
+      .hero-button {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        min-width: 140px;
+      }
+
       .feature-card {
         padding: 30px 20px;
       }
@@ -632,6 +667,22 @@
 
       .stats-grid {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-height: 600px) and (max-width: 768px) {
+      .hero-content {
+        top: calc(50% + 10px);
+      }
+      
+      .hero-title {
+        font-size: clamp(1.8rem, 8vw, 2.5rem);
+        margin-bottom: 0.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: clamp(0.8rem, 3vw, 1rem);
+        margin-bottom: 1rem;
       }
     }
 
